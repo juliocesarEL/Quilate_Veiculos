@@ -1,6 +1,6 @@
 # Quilate Veículos · Landing page
 
-[![CI/CD](https://github.com/juliocesarEL/Quilate_Veiculos/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/juliocesarEL/Quilate_Veiculos/actions/workflows/ci-cd.yml)
+[![CI](https://github.com/juliocesarEL/Quilate_Veiculos/actions/workflows/ci.yml/badge.svg)](https://github.com/juliocesarEL/Quilate_Veiculos/actions/workflows/ci.yml)
 
 Landing page para uma revenda de carros seminovos. O objetivo da página é um só: **gerar contato pelo WhatsApp**. Cada carro, formulário e botão abre uma conversa com a mensagem já escrita.
 
@@ -22,7 +22,7 @@ Landing page para uma revenda de carros seminovos. O objetivo da página é um s
 | Linguagem | **TypeScript** (modo `strict`) |
 | Estilo | **Tailwind CSS v4**, com design tokens em `@theme` |
 | Testes | **Vitest** e **Testing Library** (jsdom) |
-| CI/CD | **GitHub Actions** e deploy na **Vercel** |
+| CI/CD | **GitHub Actions** (CI) e **Vercel** (deploy contínuo) |
 | UI | React 19, ícones `lucide-react`, fontes Montserrat e Inter servidas pelo projeto |
 
 Nenhuma biblioteca de carrossel, animação ou formulário: tudo foi escrito com CSS e APIs nativas do navegador.
@@ -100,22 +100,12 @@ Os testes foram conferidos quebrando uma regra de propósito (idade mínima de 1
 
 ## CI/CD
 
-Pipeline em [.github/workflows/ci-cd.yml](.github/workflows/ci-cd.yml):
+- **CI** ([.github/workflows/ci.yml](.github/workflows/ci.yml)): em todo push e pull request, o GitHub Actions roda `npm ci`, lint, checagem de tipos, testes e build. O token do workflow tem permissão só de leitura.
+- **CD**: a integração da Vercel com o GitHub publica a `main` em produção a cada push e gera uma URL de preview para cada pull request.
 
-1. **CI** (em todo push e pull request): `npm ci`, lint, checagem de tipos, testes e build.
-2. **Deploy** (só em push na `main` e só se o CI passar): build e publicação na Vercel pela CLI.
+O build da Vercel também checa os tipos: se o código não compilar, o deploy falha e a versão anterior continua no ar. Os testes e o lint rodam no CI em paralelo e marcam o commit com ✓ ou ✗.
 
-O deploy automático da Vercel na `main` está desligado em [vercel.json](vercel.json): quem publica é o pipeline, então código com teste quebrado nunca chega à produção. Pull requests continuam ganhando URL de preview pela integração da Vercel.
-
-Para o deploy funcionar, cadastre em *Settings → Secrets and variables → Actions* do repositório:
-
-| Segredo | Onde encontrar |
-| --- | --- |
-| `VERCEL_TOKEN` | Vercel → Account Settings → Tokens |
-| `VERCEL_ORG_ID` | `.vercel/project.json`, depois de rodar `npx vercel link` |
-| `VERCEL_PROJECT_ID` | `.vercel/project.json` |
-
-Sem os segredos, o CI roda normalmente e o deploy só emite um aviso.
+Para o deploy esperar os testes passarem, dá para mover a publicação para o pipeline com a Vercel CLI (`vercel deploy --prebuilt --prod`) e um token da Vercel guardado nos segredos do GitHub.
 
 ## Rodando o projeto
 
@@ -161,7 +151,7 @@ lib/                    validacao.ts, format.ts, whatsapp.ts
 data/                   loja.ts, veiculos.ts, faq.ts, depoimentos.ts
 tests/                  lib/ e components/
 scripts/                gerar-icones-og.mjs (ícones e imagem de compartilhamento)
-.github/workflows/      ci-cd.yml
+.github/workflows/      ci.yml
 ```
 
 ## Próximos passos
