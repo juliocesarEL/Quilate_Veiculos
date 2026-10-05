@@ -1,0 +1,16 @@
+/*
+ * Ponto de entrada dos estilos. Cada arquivo tem uma responsabilidade:
+ *   tokens      cores, fontes, escala tipográfica e utilitários (@theme / @utility)
+ *   base        estilos dos elementos HTML e foco visível
+ *   reveal      revelação dos elementos ao rolar
+ *   hero        abertura da página, reflexo do diamante, checklist e faixa rolante
+ *   components  efeitos reutilizados (brilho do botão, spotlight, acordeão...)
+ *   motion      animações guiadas pela rolagem e movimento reduzido (sempre por último)
+ */
+@import "tailwindcss";
+@import "./styles/tokens.css";
+@import "./styles/base.css";
+@import "./styles/reveal.css";
+@import "./styles/hero.css";
+@import "./styles/components.css";
+@import "./styles/motion.css";

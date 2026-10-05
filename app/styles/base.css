@@ -1,0 +1,55 @@
+/* ============================================================
+   Estilos base dos elementos HTML
+   ============================================================ */
+
+@layer base {
+  html {
+    scroll-padding-top: 5.5rem; /* compensa o header fixo nos links âncora */
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    overflow-x: clip;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  section[id] {
+    scroll-margin-top: 5.5rem;
+  }
+
+  ::selection {
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  /* Foco visível: verde escuro em fundo claro, verde claro em fundo escuro (.on-dark) */
+  :focus-visible {
+    outline: 3px solid var(--focus-ring, var(--color-primary));
+    outline-offset: 3px;
+  }
+
+  .on-dark {
+    --focus-ring: var(--color-primary-light);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

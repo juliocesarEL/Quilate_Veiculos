@@ -1,0 +1,59 @@
+/* ============================================================
+   Revelação ao rolar
+   components/RevealObserver.tsx adiciona .is-in quando o elemento entra na tela.
+   A classe .js (posta antes da primeira pintura) garante que, sem JavaScript,
+   nada fica escondido.
+   Uso: data-reveal (sobe), data-reveal="zoom", data-reveal="clip"; atraso em --d.
+   ============================================================ */
+
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 0.9s var(--ease-out-expo),
+    transform 1s var(--ease-out-expo);
+  transition-delay: var(--d, 0ms);
+}
+
+html.js [data-reveal="zoom"] {
+  transform: scale(0.92);
+}
+
+/* O recorte vai no filho: o IntersectionObserver ignora alvos com clip-path fechado */
+html.js [data-reveal="clip"] {
+  opacity: 1;
+  transform: none;
+}
+
+html.js [data-reveal="clip"] > * {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.3s var(--ease-out-expo) var(--d, 0ms);
+}
+
+html.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+html.js [data-reveal="clip"].is-in > * {
+  clip-path: inset(-4rem);
+}
+
+/* Linha "lapidada" sob os títulos de seção: cresce da esquerda ao aparecer */
+.facet-rule {
+  display: block;
+  height: 3px;
+  width: 4.5rem;
+  background: linear-gradient(90deg, var(--color-primary-light), var(--color-primary) 60%, transparent);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  transform-origin: left;
+}
+
+html.js [data-reveal] .facet-rule {
+  transform: scaleX(0);
+  transition: transform 1.2s var(--ease-out-expo) 0.25s;
+}
+
+html.js [data-reveal].is-in .facet-rule {
+  transform: scaleX(1);
+}

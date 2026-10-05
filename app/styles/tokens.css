@@ -1,0 +1,88 @@
+/* ============================================================
+   Tokens de design e utilitários do projeto
+   Tailwind v4: @theme gera as classes (bg-primary, text-h2, rounded-card...)
+   ============================================================ */
+
+/* Celular deitado: pouca altura, bastante largura */
+@custom-variant short (@media (orientation: landscape) and (max-height: 540px));
+
+@theme {
+  /* Cores da marca */
+  --color-primary: #2d6a53;
+  --color-primary-dark: #1a3f31;
+  --color-primary-light: #53b590;
+
+  /* Neutros */
+  --color-ink: #0e1217;
+  --color-ink-soft: #161c23;
+  --color-ink-line: #27303a;
+  --color-slate: #5f6368;
+  --color-surface: #f5f7f6;
+  --color-line: #dfe5e2;
+
+  /* Fontes (variáveis criadas pelo next/font em app/layout.tsx) */
+  --font-display: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Um raio para cards, outro para botões e campos */
+  --radius-card: 1.25rem;
+  --radius-btn: 0.75rem;
+
+  /* Escala tipográfica fluida */
+  --text-hero: clamp(2rem, 1rem + 3.4vw, 4rem);
+  --text-hero--line-height: 1.04;
+  --text-hero--letter-spacing: -0.025em;
+  --text-h2: clamp(1.75rem, 1.2rem + 2.3vw, 3.125rem);
+  --text-h2--line-height: 1.08;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h3: clamp(1.125rem, 1.04rem + 0.4vw, 1.375rem);
+  --text-h3--line-height: 1.3;
+  --text-lead: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --text-lead--line-height: 1.6;
+
+  /* Profundidade */
+  --shadow-card: 0 1px 2px rgb(14 18 23 / 0.04), 0 10px 30px -14px rgb(14 18 23 / 0.16);
+  --shadow-card-hover: 0 2px 6px rgb(14 18 23 / 0.06), 0 30px 60px -24px rgb(14 18 23 / 0.32);
+  --shadow-glow: 0 0 0 1px rgb(83 181 144 / 0.35), 0 12px 40px -8px rgb(45 106 83 / 0.55);
+
+  /* Movimento */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --breakpoint-xs: 25rem;
+}
+
+/* Largura máxima e respiro lateral (respeita o notch do iPhone deitado).
+   --gutter fica disponível para filhos que precisam "vazar" até a borda (ex.: carrossel). */
+@utility container-site {
+  --gutter: max(clamp(1rem, 0.4rem + 2.4vw, 2rem), env(safe-area-inset-left), env(safe-area-inset-right));
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Espaçamento vertical padrão das seções */
+@utility section-y {
+  padding-block: clamp(4rem, 2.6rem + 6vw, 8rem);
+}
+
+/* Seções abaixo da dobra: layout e pintura só quando chegam perto da tela */
+@utility cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+/* Largura confortável de leitura */
+@utility measure {
+  max-width: 65ch;
+}
+
+/* Rolável, mas sem barra visível (carrossel, filtros) */
+@utility no-scrollbar {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

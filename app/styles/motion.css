@@ -1,0 +1,90 @@
+/* ============================================================
+   Animações guiadas pela rolagem e preferência de movimento reduzido
+   ============================================================ */
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes hero-exit {
+  to {
+    transform: translate3d(0, 14%, 0) scale(0.94);
+    opacity: 0.35;
+  }
+}
+
+@keyframes parallax-up {
+  from {
+    transform: translate3d(0, 40px, 0);
+  }
+  to {
+    transform: translate3d(0, -40px, 0);
+  }
+}
+
+/* Barra de progresso de leitura no header */
+.scroll-progress {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* Só em navegadores com scroll-driven animations e depois de .ready */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .ready .scroll-progress {
+      animation: grow-x linear both;
+      animation-timeline: scroll(root block);
+    }
+
+    .ready .hero-exit {
+      animation: hero-exit linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+
+    .ready .parallax {
+      animation: parallax-up linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+  }
+}
+
+@supports not (animation-timeline: scroll()) {
+  .scroll-progress {
+    display: none;
+  }
+}
+
+/* "Reduzir movimento" ligado no sistema: tudo aparece direto no estado final */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html.js [data-reveal],
+  html.js [data-reveal="clip"] > * {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+
+  .sheen,
+  .twinkle,
+  .pulse-ring {
+    display: none;
+  }
+
+  .marquee-track {
+    animation: none;
+  }
+}

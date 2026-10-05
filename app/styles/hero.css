@@ -1,0 +1,138 @@
+/* ============================================================
+   Hero: abertura da página
+   Título palavra por palavra, textos sobem, checklist marca em sequência.
+   A foto e o diamante ficam parados; só o reflexo e as cintilações se movem.
+   ============================================================ */
+
+@keyframes word-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.55em, 0) rotate(3deg);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+}
+
+/* Cada palavra do h1 entra com atraso proporcional à posição (--i) */
+.hero-word {
+  display: inline-block;
+  animation: word-rise 0.9s var(--ease-out-expo) both;
+  animation-delay: calc(80ms + var(--i, 0) * 55ms);
+}
+
+.hero-fade {
+  animation: fade-up 0.9s var(--ease-out-expo) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* Brilho no texto em destaque do título */
+@keyframes text-shine {
+  0% {
+    background-position: 100% 0;
+  }
+  40%,
+  100% {
+    background-position: -150% 0;
+  }
+}
+
+/* ---------- Diamante da marca: reflexo e cintilações ---------- */
+
+@keyframes sheen {
+  0% {
+    transform: translate3d(-130%, 0, 0) skewX(-22deg);
+  }
+  28%,
+  100% {
+    transform: translate3d(260%, 0, 0) skewX(-22deg);
+  }
+}
+
+.sheen {
+  animation: sheen 6.5s cubic-bezier(0.45, 0, 0.2, 1) 1.9s infinite both;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1) rotate(90deg);
+  }
+  60% {
+    opacity: 0;
+    transform: scale(0.2) rotate(140deg);
+  }
+}
+
+.twinkle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: twinkle 3.6s ease-in-out infinite both;
+  animation-delay: var(--d, 0s);
+}
+
+/* ---------- Checklist: cada item marca em sequência (atraso em --d) ---------- */
+
+@keyframes check-pop {
+  0% {
+    transform: scale(0.4);
+    background-color: transparent;
+  }
+  60% {
+    transform: scale(1.18);
+  }
+}
+
+@keyframes check-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.check-item .check-box {
+  animation: check-pop 0.55s var(--ease-spring) both;
+  animation-delay: var(--d);
+}
+
+.check-item .check-path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: check-draw 0.45s ease-out forwards;
+  animation-delay: calc(var(--d) + 0.18s);
+}
+
+.check-item .check-text {
+  animation: fade-up 0.6s var(--ease-out-expo) both;
+  animation-delay: var(--d);
+}
+
+/* ---------- Faixa rolante abaixo do hero ---------- */
+
+@keyframes marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-track {
+  animation: marquee 38s linear infinite;
+}
+
+/* Animações contínuas só começam ao fim da abertura (.ready, posta pelo RevealObserver),
+   para não disputar a thread principal com a primeira pintura. */
+html:not(.ready) :is(.marquee-track, .sheen, .twinkle, .pulse-ring) {
+  animation-play-state: paused;
+}
+
+html:not(.ready) .mark-sheen {
+  display: none;
+}
